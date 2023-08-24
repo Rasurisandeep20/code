@@ -1,12 +1,12 @@
 //even,odd,prime numbers without loops
-import java.util.function.Predicate;
+mport java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 
 public class NumberOperations {
     public static void main(String[] args) {
-        Predicate<Integer> isEven = num -> num % 2 == 0;
-        Predicate<Integer> isOdd = num -> num % 2 != 0;
-        Predicate<Integer> isPrime = num -> num > 1 && IntStream.rangeClosed(2, (int) Math.sqrt(num))
+        IntPredicate isEven = num -> num % 2 == 0;
+        IntPredicate isOdd = num -> num % 2 != 0;
+        IntPredicate isPrime = num -> num > 1 && IntStream.rangeClosed(2, (int) Math.sqrt(num))
                                                             .noneMatch(i -> num % i == 0);
 
         System.out.println("Even Numbers:");
@@ -23,27 +23,61 @@ public class NumberOperations {
         IntStream.rangeClosed(1, 20)
                 .filter(isPrime)
                 .forEach(System.out::println);
-    }
+    }
+}
+
+
+
+//for array of numbers
+import java.util.Arrays;
+import java.util.function.IntPredicate;
+import java.util.stream.IntStream;
+
+public class NumberClassification {
+    public static void main(String[] args) {
+        int[] numbers = { 2, 5, 10, 15, 7, 23, 8, 11 };
+
+        IntPredicate isEven = n -> n % 2 == 0;
+        IntPredicate isOdd = n -> n % 2 != 0;
+        IntPredicate isPrime = n -> n > 1 && IntStream.rangeClosed(2, (int) Math.sqrt(n)).noneMatch(i -> n % i == 0);
+
+        System.out.println("Even numbers:");
+        Arrays.stream(numbers)
+              .filter(isEven)
+              .forEach(System.out::println);
+
+        System.out.println("Odd numbers:");
+        Arrays.stream(numbers)
+              .filter(isOdd)
+              .forEach(System.out::println);
+
+        System.out.println("Prime numbers:");
+        Arrays.stream(numbers)
+              .filter(isPrime)
+              .forEach(System.out::println);
+    }
 }
 
 
 
 //runnable using streams
+import java.util.stream.IntStream;
+
 public class NumberPrinter implements Runnable {
+
     @Override
     public void run() {
-        // Use a stream to generate and display numbers
-        Stream.iterate(1, n -> n + 1)
-              .limit(10) // Change this limit as needed
-              .forEach(System.out::println);
+        // Use IntStream to generate numbers from 1 to 10
+        IntStream.rangeClosed(1, 10)
+                 .forEach(number -> System.out.println(number));
     }
-}
-public class Main {
-    public static void main(String[] args) {
-        NumberPrinter numberPrinter = new NumberPrinter();
-        Thread thread = new Thread(numberPrinter);
 
-        // Start the thread
+    public static void main(String[] args) {
+        // Create an instance of NumberPrinter
+        NumberPrinter numberPrinter = new NumberPrinter();
+
+        // Create a thread and start it
+        Thread thread = new Thread(numberPrinter);
         thread.start();
     }
 }
