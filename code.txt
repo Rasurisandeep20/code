@@ -1,0 +1,75 @@
+//even,odd,prime numbers without loops
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
+public class NumberOperations {
+    public static void main(String[] args) {
+        Predicate<Integer> isEven = num -> num % 2 == 0;
+        Predicate<Integer> isOdd = num -> num % 2 != 0;
+        Predicate<Integer> isPrime = num -> num > 1 && IntStream.rangeClosed(2, (int) Math.sqrt(num))
+                                                            .noneMatch(i -> num % i == 0);
+
+        System.out.println("Even Numbers:");
+        IntStream.rangeClosed(1, 20)
+                .filter(isEven)
+                .forEach(System.out::println);
+
+        System.out.println("\nOdd Numbers:");
+        IntStream.rangeClosed(1, 20)
+                .filter(isOdd)
+                .forEach(System.out::println);
+
+        System.out.println("\nPrime Numbers:");
+        IntStream.rangeClosed(1, 20)
+                .filter(isPrime)
+                .forEach(System.out::println);
+    }
+}
+
+
+
+//runnable using streams
+public class NumberPrinter implements Runnable {
+    @Override
+    public void run() {
+        // Use a stream to generate and display numbers
+        Stream.iterate(1, n -> n + 1)
+              .limit(10) // Change this limit as needed
+              .forEach(System.out::println);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        NumberPrinter numberPrinter = new NumberPrinter();
+        Thread thread = new Thread(numberPrinter);
+
+        // Start the thread
+        thread.start();
+    }
+}
+
+
+//regex using streams
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+public class EmailValidation {
+    public static void main(String[] args) {
+        List<String> emails = List.of(
+            "user@example.com",
+            "invalid.email",
+            "another@example.com",
+            "wrongformat.com"
+        );
+
+        Pattern emailPattern = Pattern.compile("[A-Za-z0-9+_.-]+@(.+)$");
+
+        List<String> validEmails = emails.stream()
+                .filter(emailPattern.asPredicate())
+                .collect(Collectors.toList());
+
+        System.out.println("Valid emails:");
+        validEmails.forEach(System.out::println);
+    }
+}
