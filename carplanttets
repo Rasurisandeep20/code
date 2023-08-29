@@ -1,0 +1,48 @@
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class BalenoTest {
+
+    @Test
+    public void testToggleHybridModeHybrid() {
+        Baleno balenoHybrid = new Baleno("Yellow", true);
+        
+        // Ensure that the Baleno instance is hybrid
+        assertTrue(balenoHybrid.isHybrid());
+
+        // Capture the printed output
+        String output = captureOutput(balenoHybrid::toggleHybridMode);
+
+        String expectedOutput = "Switching BAleno to Hybrid mode.";
+        assertEquals(expectedOutput, output);
+    }
+
+    @Test
+    public void testToggleHybridModeNotHybrid() {
+        Baleno balenoNonHybrid = new Baleno("Yellow", false);
+        
+        // Ensure that the Baleno instance is not hybrid
+        assertFalse(balenoNonHybrid.isHybrid());
+
+        // Capture the printed output
+        String output = captureOutput(balenoNonHybrid::toggleHybridMode);
+
+        String expectedOutput = "This baleno model is not Hybrid";
+        assertEquals(expectedOutput, output);
+    }
+
+    private String captureOutput(Runnable method) {
+        // Capture the standard output
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
+
+        method.run(); // Execute the method
+
+        // Reset the standard output
+        System.out.flush();
+        System.setOut(originalOut);
+
+        return outputStream.toString().trim();
+    }
+}
